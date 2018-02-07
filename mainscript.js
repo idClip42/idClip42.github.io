@@ -9,7 +9,7 @@ var holderHeight = "70%";
 
 function setUpMouseOver(){
 
-	var widthMult = 3;
+	var widthMult = 2;
 	var divider = blocks.length + widthMult - 1;
 	var perc = 100/divider;
 
