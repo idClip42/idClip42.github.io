@@ -64,6 +64,8 @@ function addPreviewTitle(block){
 function makeGallery(block){
 	var images = block.querySelectorAll('.gallery img');
 
+	// console.log(images);
+
 	let imageLinks = [];
 
 	var bgLink = block.style.backgroundImage.split('"')[1];
@@ -78,6 +80,8 @@ function makeGallery(block){
 
 
 	if(imageLinks.length > 1){
+
+		// console.log(imageLinks);
 
 		var leftButton = document.createElement("BUTTON");
 		leftButton.value = -1;
@@ -188,6 +192,7 @@ function addEmail(){
 
 
 window.onload = function(){
+	createBlocks();
 	addEmail();
 	document.querySelector("#loading").hidden = true;
 	//document.querySelector("#holder").hidden = false;
@@ -201,3 +206,100 @@ window.onload = function(){
 	//	setUpMouseOver();
 	//}
 }
+
+
+
+
+
+
+
+var createBlocks = function(){
+	var baseBlock = document.querySelector("#baseBlock");
+	var holder = document.querySelector("#holder");
+
+	content.forEach(function(block){
+
+		var newNode = baseBlock.cloneNode(true);
+
+		var title = newNode.querySelector(".title");
+		var titleImg = newNode.querySelector(".titleImage");
+		var blurb = newNode.querySelector(".blurb");
+		var controls = newNode.querySelector(".controls");
+		var info = newNode.querySelector(".info");
+		var year = newNode.querySelector(".year");
+		var link = newNode.querySelector(".gameLinks");
+		var gallery = newNode.querySelector(".gallery");
+
+		if(block.titleImage)
+			titleImg.src = block.titleImage;
+		else {
+			titleImg.parentElement.removeChild(titleImg);
+			title.innerHTML = block.title;
+		}
+
+		blurb.innerHTML = block.blurb;
+
+		if(block.controls.length === 0)
+			controls.parentElement.removeChild(controls);
+		else
+		{
+			var list = controls.querySelector("ul");
+			block.controls.forEach(function(line){
+				var li = document.createElement('li');
+				li.innerHTML = line;
+				list.appendChild(li);
+			});
+		}
+
+		year.innerHTML = block.year;
+
+		for(var key in block.links){
+			var li = link.cloneNode(true);
+			li.querySelector("a").href = block.links[key];
+			li.querySelector("a").innerHTML = key;
+			link.parentElement.appendChild(li);
+		}
+		link.parentElement.removeChild(link);
+
+		block.info = block.info.split("\n");
+		block.info.forEach(function(line){
+			info.innerHTML += "<p>" + line + "</p>";
+		})
+
+		block.images.forEach(function(img){
+			var i = document.createElement("img");
+			i.src = img;
+			i.classList.remove("galleryImage")
+			gallery.appendChild(i);
+		});
+
+		newNode.style.backgroundPositionX = block.backgroundImagePosition;
+		newNode.style.backgroundImage = 'url("' + block.images[0] + '")';
+
+		holder.appendChild(newNode);
+
+	});
+
+	baseBlock.parentElement.removeChild(baseBlock);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
