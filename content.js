@@ -21,7 +21,8 @@ content = [
 			"images/whodunnit4.jpg",
 			"images/whodunnit5.jpg",
 		],
-		backgroundImagePosition : "34%",
+		backgroundImagePosition : "39%",
+		showpiece : true,
 		
 	},
 
@@ -43,7 +44,8 @@ content = [
 			"images/isoPt06.jpg",
 			"images/isoPt07.jpg",
 		],
-		backgroundImagePosition : "45%",
+		backgroundImagePosition : "40%",
+		showpiece : true,
 		
 	},
 
@@ -64,6 +66,7 @@ content = [
 	// 		"images/icee6.jpg",
 	// 	],
 	// 	backgroundImagePosition : "70%",
+	//	showpiece : true,
 		
 	// },
 
@@ -76,14 +79,15 @@ content = [
 		controls: [],
 		links: {"Play!" : "WebGame/index.html"},
 		images: [
+			"images/pizza5.jpg",
 			"images/pizzascreen.jpg",
 			"images/pizza1.jpg",
 			"images/pizza2.jpg",
 			"images/pizza3.jpg",
 			"images/pizza4.jpg",
-			"images/pizza5.jpg",
 		],
-		backgroundImagePosition : "40%",
+		backgroundImagePosition : "32%",
+		showpiece : true,
 		
 	},
 
@@ -101,6 +105,7 @@ content = [
 			"images/thing03.jpg",
 		],
 		backgroundImagePosition : "26%",
+		showpiece : false,
 		
 	},
 
@@ -119,6 +124,7 @@ content = [
 			"images/spyHunter3.jpg",
 		],
 		backgroundImagePosition : "40%",
+		showpiece : false,
 		
 	},
 
@@ -140,6 +146,7 @@ content = [
 			"images/zombie3.jpg",
 		],
 		backgroundImagePosition : "60%",
+		showpiece : false,
 		
 	},
 

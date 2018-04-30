@@ -1,41 +1,94 @@
+var blocks = [];
+var subblocks = [];
 
-var blocks;
+const blockGrowPercent = 30;
+const subblockGrowPercent = 40;
+const growSubHolder = true;
+const marginSize = "10px";
 
-var headerHeight = "20%";
-var holderHeight = "70%";
+
+
+
+var Block = function(element, hasContent, sizeChangeDim){
+	this.e = element;
+	this.style = this.e.style;
+	this.setDim = function(perc){
+		this.e.style[sizeChangeDim] = "calc(" + perc + "%" + " - " + (parseInt(marginSize)*2) + "px)";
+	};
+	this.sizeChangeDim = sizeChangeDim;
+	this.showpiece = this.e.parentElement.id === "holder";
+	this.hasContent = hasContent;
+	Object.seal(this);
+}
+
+
+
+
+function adjustWidth(blocks, index, bigPerc = -1){
+	if(bigPerc === -1)
+		bigPerc = 100 / blocks.length;
+	var smallPerc = (100 - bigPerc) / (blocks.length - 1);
+	for(var i in blocks)
+		blocks[i].setDim((i == index) ? bigPerc : smallPerc);
+}
+
+
+function adjustBigHeights(head, hold, foot){
+	document.querySelector("#header").style.height = head;
+	document.querySelector("#holder").style.height = hold;
+	document.querySelector("footer").style.height = foot;
+}
 
 
 
 
 function setUpMouseOver(){
 
-	var widthMult = 2;
-	var divider = blocks.length + widthMult - 1;
-	var perc = 100/divider;
+	subblocks.forEach(function(b){
+		b.style.width = "100%";
+		b.style.height = 100/subblocks.length + "%";
+	});
 
-	for(let n = 0; n < blocks.length; ++n){
-		let b = blocks[n];
-		b.style.width = perc + "%";
+	var allBlocks = blocks.concat(subblocks);
 
-		b.onmouseenter = function(){
-			b.style.width = perc * widthMult + "%";
-			b.querySelector('.preview').style.width = "90%";
+	for(let n = 0; n < allBlocks.length; ++n){
+		let b = allBlocks[n];
+		b.style.margin = marginSize;
+		if(b.showpiece)
+			b.setDim(100/blocks.length);
+
+		b.e.onmouseenter = function(){
+			if(b.showpiece){
+				if(!b.hasContent && !growSubHolder)
+					adjustWidth(blocks, n);
+				else
+					adjustWidth(blocks, n, blockGrowPercent);
+			}
+			else{
+				adjustWidth(subblocks, n - blocks.length, subblockGrowPercent);
+			}
+			if(b.hasContent){
+				b.e.querySelector('.preview').style.width = "90%";
+			}
 		}
 
-		b.onmouseleave = function(){
-			b.style.width = perc + "%";
-			b.querySelector('.preview').style.width = 0;
+		b.e.onmouseleave = function(){
+			if(b.showpiece)
+				adjustWidth(blocks, n);
+			else
+				adjustWidth(subblocks, n - blocks.length);
+			if(b.hasContent)
+				b.e.querySelector('.preview').style.width = 0;
 		}
 
-		b.onclick = function(){
-			clickOpen(blocks, n);
-			b.querySelector('.preview').style.width = 0;
+		if(b.hasContent){
+			b.e.onclick = function(){
+				clickOpen(allBlocks, n);
+				b.e.querySelector('.preview').style.width = 0;
+			}
 		}
 	}
-
-	document.querySelector("#header").style.height = headerHeight;
-	document.querySelector("#holder").style.height = holderHeight;
-	document.querySelector("footer").style.height = "auto";
+	adjustBigHeights("", "", "");
 }
 
 
@@ -55,6 +108,16 @@ function addPreviewTitle(block){
 	blurb.innerHTML = block.querySelector('.blurb').innerHTML;
 	preview.appendChild(blurb);
 
+	if(block.parentElement.id === "holdersub"){
+		preview.style.height = "100%";
+		title.style.height = "50%";
+		var image = title.querySelector("img");
+		image.style.maxHeight = "100%";
+		image.style.maxWidth = "100%";
+		image.style.height = "auto";
+		image.style.width = "auto";
+	}
+
 	block.appendChild(preview);
 }
 
@@ -64,24 +127,16 @@ function addPreviewTitle(block){
 function makeGallery(block){
 	var images = block.querySelectorAll('.gallery img');
 
-	// console.log(images);
-
 	let imageLinks = [];
-
-	var bgLink = block.style.backgroundImage.split('"')[1];
-	imageLinks.push(bgLink);
 
 	for(let n = 0; n < images.length; ++n){
 		let i = images[n];
 		let iLink = images[n].outerHTML.split('"')[1];
-		if(iLink !== bgLink)
-			imageLinks.push(iLink);
+		imageLinks.push(iLink);
 	}
 
 
 	if(imageLinks.length > 1){
-
-		// console.log(imageLinks);
 
 		var leftButton = document.createElement("BUTTON");
 		leftButton.value = -1;
@@ -91,13 +146,9 @@ function makeGallery(block){
 		rightButton.value = 1;
 		rightButton.className = "galleryControl galleryRight";
 		rightButton.innerHTML = ">";
-		//var expText = document.createElement("DIV");
-		//expText.className = "galleryControl";
-		//expText.innerHTML = "Cycle Images";
 
 		var controls = document.createElement("SECTION");
 		controls.appendChild(leftButton);
-		//controls.appendChild(expText);
 		controls.appendChild(rightButton);
 		block.querySelector(".content").appendChild(controls);
 
@@ -122,23 +173,22 @@ function makeGallery(block){
 
 
 function initBlocks(){
-
-	for(let n = 0; n < blocks.length; ++n){
-		let b = blocks[n];
-
-		addPreviewTitle(b);
-		makeGallery(b);
-
-		let c = b.querySelector(".content");
-
-		let x = c.querySelector(".x");
-		x.onclick = function(e){
-			e.stopPropagation();
-			setUpMouseOver();
+	var allBlocks = blocks.concat(subblocks);
+	for(let n = 0; n < allBlocks.length; ++n){
+		let b = allBlocks[n];
+		if(b.hasContent === true){
+			addPreviewTitle(b.e);
+			makeGallery(b.e);
+			let c = b.e.querySelector(".content");
+			let x = c.querySelector(".x");
+			x.onclick = function(e){
+				e.stopPropagation();
+				setUpMouseOver();
+				c.hidden = true;
+				b.style.cursor = "pointer";
+			};
 			c.hidden = true;
-			b.style.cursor = "pointer";
-		};
-		c.hidden = true;
+		}
 	}
 }
 
@@ -146,35 +196,24 @@ function initBlocks(){
 
 
 function clickOpen(blocks, index){
-
-	//var miniWidth = 10;
-	//var maxWidth = document.body.clientWidth - miniWidth * (blocks.length-1);
-	//var miniWidth = 0.6;
-	//var maxWidth = 100 - miniWidth * (blocks.length-1);
-	var miniWidth = 0;
-	var maxWidth = 100;
-
-
 	for(let n = 0; n < blocks.length; ++n){
 		let b = blocks[n];
-		//b.style.width = miniWidth + "px";
-		b.style.width = miniWidth + "%";
-		b.onmouseenter = function(){};
-		b.onmouseleave = function(){};
-		b.onclick = function(){ clickOpen(blocks, n) };
-		b.style.cursor = "pointer";
-		b.querySelector(".content").hidden = true;
+		if(b.showpiece)
+			b.style.width = (n === index) ? "100%" : "0%";
+		else{
+			if(blocks[index].showpiece === false)
+				b.style.height = (n === index) ? "100%" : "0%";
+			if(n === index)
+				document.querySelector("#holdersub").style.width = "100%";
+		}
+		b.style.margin = "";
+		b.e.onmouseenter = function(){};
+		b.e.onmouseleave = function(){};
+		b.e.onclick = function(){};
+		b.style.cursor = (n === index) ? "auto" : "pointer";
+		b.e.querySelector(".content").hidden = (n === index) ? false : true;
 	}
-	let b = blocks[index];
-	//b.style.width = maxWidth + "px";
-	b.style.width = maxWidth + "%";
-	b.onclick = function(){ };
-	b.style.cursor = "auto";
-	b.querySelector(".content").hidden = false;
-
-	document.querySelector("#header").style.height = "0";
-	document.querySelector("#holder").style.height = "100%";
-	document.querySelector("footer").style.height = "0";
+	adjustBigHeights("0", "100%", "0");
 }
 
 
@@ -195,16 +234,9 @@ window.onload = function(){
 	createBlocks();
 	addEmail();
 	document.querySelector("#loading").hidden = true;
-	//document.querySelector("#holder").hidden = false;
 	document.querySelector("#holder").style.display = "block";
-	blocks = document.querySelectorAll(".block");
 	initBlocks();
 	setUpMouseOver();
-
-	//document.onresize = function(e){ 
-	//	console.log("resize");
-	//	setUpMouseOver();
-	//}
 }
 
 
@@ -214,8 +246,12 @@ window.onload = function(){
 
 
 var createBlocks = function(){
-	var baseBlock = document.querySelector("#baseBlock");
+	var baseBlock = document.querySelector(".block");
 	var holder = document.querySelector("#holder");
+	var subholder = document.createElement("div");
+	subholder.className = "block";
+	subholder.id = "holdersub";
+
 
 	content.forEach(function(block){
 
@@ -241,8 +277,7 @@ var createBlocks = function(){
 
 		if(block.controls.length === 0)
 			controls.parentElement.removeChild(controls);
-		else
-		{
+		else {
 			var list = controls.querySelector("ul");
 			block.controls.forEach(function(line){
 				var li = document.createElement('li');
@@ -276,30 +311,21 @@ var createBlocks = function(){
 		newNode.style.backgroundPositionX = block.backgroundImagePosition;
 		newNode.style.backgroundImage = 'url("' + block.images[0] + '")';
 
-		holder.appendChild(newNode);
+		if(block.showpiece){
+			holder.appendChild(newNode);
+			blocks.push(new Block(newNode, true, "width"));
+		}
+		else{
+			subholder.appendChild(newNode);
+			subblocks.push(new Block(newNode, true, "height"));
+		}
 
 	});
 
+	if(subblocks.length > 0){
+		holder.appendChild(subholder);
+		blocks.push(new Block(subholder, false, "width"));
+	}
+
 	baseBlock.parentElement.removeChild(baseBlock);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
