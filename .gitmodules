@@ -1,0 +1,4 @@
+[submodule "WebGame"]
+	path = WebGame
+	url = https://github.com/idClip42/Pizza-Quest.git
+	branch = OriginalGame
