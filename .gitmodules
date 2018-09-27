@@ -2,3 +2,6 @@
 	path = WebGame
 	url = https://github.com/idClip42/Pizza-Quest.git
 	branch = OriginalGame
+[submodule "sh-tracker"]
+	path = sh-tracker
+	url = https://github.com/idClip42/sh-tracker.git
