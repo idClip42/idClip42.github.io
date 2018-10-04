@@ -27,11 +27,21 @@
             button.onclick = function(){
                 audio.play();
             };
+	    if(getUrlVars().autoplay === "true")
+		audio.autoplay = true;
         };
+	    
+	function getUrlVars() {
+    	    var vars = {};
+    	    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+            	vars[key] = value;
+            });
+            return vars;
+	}
     </script>
 </head>
 <body>
     <img src="button.png">
-    <audio src="brainblast.mp3" hidden autoplay></audio>
+    <audio src="brainblast.mp3" hidden></audio>
 </body>
 </html>
