@@ -22,13 +22,22 @@
         "use strict"
 
         window.onload = function(){
-            let button = document.getElementsByTagName("img")[0];
-            let audio = document.getElementsByTagName("audio")[0];
-            button.onclick = function(){
-                audio.play();
+            let brainblastButton = document.getElementById("brainblastButton");
+            let brainblastAudio = document.getElementById("brainblastAudio");
+            brainblastButton.onclick = function(){
+                brainblastAudio.play();
             };
-	    if(getUrlVars().autoplay === "true")
-		audio.autoplay = true;
+
+            let believeButton = document.getElementById("believeButton");
+            let believeAudio = document.getElementById("believeAudio");
+            believeButton.onclick = function(){
+                believeAudio.play();
+            };
+
+		    if(getUrlVars().autoplay === "true"){
+				brainblastAudio.autoplay = true;
+				believeAudio.autoplay = true;
+			}
         };
 	    
 	function getUrlVars() {
@@ -41,7 +50,9 @@
     </script>
 </head>
 <body>
-    <img src="button.png">
-    <audio src="brainblast.mp3" hidden></audio>
+    <img id="brainblastButton" src="neutronButton.png">
+    <audio id="brainblastAudio" src="brainblast.mp3" hidden></audio>
+    <img id="believeButton" src="believeButton.png">
+    <audio id="believeAudio" src="believe.mp3" hidden></audio>
 </body>
 </html>
