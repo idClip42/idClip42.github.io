@@ -9,7 +9,7 @@ content = [
 		controls: [],
 		links: {
 			"Play Web Demo (Firefox Strongly Recommended)" : "webgl/WhodunnitWebDemo1/index.html",
-			"Download Latest Build" : "https://www.dropbox.com/sh/ci2ppw4b37sgshm/AACmfU4i5XGVEWjzg7YULJj4a?dl=0",
+			"Mac and Windows Downloads" : "https://www.dropbox.com/sh/ci2ppw4b37sgshm/AACmfU4i5XGVEWjzg7YULJj4a?dl=0",
 			"Github Page" : "https://github.com/idClip42/Whodunnit",
 			"Development Blog" : "https://idclip42.tumblr.com/"
 		},
