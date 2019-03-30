@@ -25,7 +25,7 @@ content = [
 			"images/whodunnit7.jpg",
 			"images/whodunnit8.jpg",
 		],
-		backgroundImagePosition : "47%",
+		backgroundImagePosition : "75%",
 		showpiece : true,
 		
 	},
