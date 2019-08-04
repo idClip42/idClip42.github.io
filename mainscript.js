@@ -225,7 +225,7 @@ function addEmail(){
 	// Adds email in a safe way
 	var aboutMe = document.querySelector("#header");
 	if(aboutMe != null)
-		aboutMe.innerHTML += "<p>axe6801" + "@" + "rit.edu</p>";
+		aboutMe.innerHTML += "<p>alexanderearley" + "@" + "verizon.net</p>";
 }
 
 
