@@ -81,7 +81,9 @@ content = [
 		year: "2016",
 		info: "<p>Written in JavaScript using Canvas\nA game in the style of 90s LucasArts adventure games\nI built the adventure game framework first, then made the game itself on top of it, so that I could reuse the framework on future projects\nThis game also works on touch screen devices",
 		controls: [],
-		links: {"Play!" : "WebGame/index.html"},
+		links: {"Play!" : "WebGame/index.html",
+				"itch.io" : "https://idclip42.itch.io/pizza-quest"
+		},
 		images: [
 			"images/pizza5.jpg",
 			"images/pizzascreen.jpg",
