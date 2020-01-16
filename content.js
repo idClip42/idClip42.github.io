@@ -8,7 +8,7 @@ content = [
 		info: "My current, ongoing independent project.\nA murder mystery in which the player must determine which of 8 characters is killing off the others.",
 		controls: [],
 		links: {
-			"Play Web Demo (Firefox Strongly Recommended)" : "webgl/WhodunnitWebDemo1/index.html",
+			"Play Web Demo" : "webgl/WhodunnitWebDemo1/index.html",
 			"Mac and Windows Downloads" : "https://www.dropbox.com/sh/ci2ppw4b37sgshm/AACmfU4i5XGVEWjzg7YULJj4a?dl=0",
 			// "Github Page" : "https://github.com/idClip42/Whodunnit",
 			"Development Blog" : "https://idclip42.tumblr.com/"
