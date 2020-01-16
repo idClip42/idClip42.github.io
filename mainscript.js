@@ -223,6 +223,10 @@ function clickOpen(blocks, index){
 
 function addEmail(){
 	// Adds email in a safe way
+
+	// this isn't needed right now
+	return;
+
 	var aboutMe = document.querySelector("#header");
 	if(aboutMe != null)
 		aboutMe.innerHTML += "<p>alexanderearley" + "@" + "verizon.net</p>";
