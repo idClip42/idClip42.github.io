@@ -4,7 +4,7 @@ content = [
 		title: "Whodunnit",
 		titleImage: "images/whodunnitLogo.png",
 		blurb: "A murder mystery",
-		year: "2018-2019",
+		year: "2018-Present",
 		info: "My current, ongoing independent project.\nA murder mystery in which the player must determine which of 8 characters is killing off the others.",
 		controls: [],
 		links: {
