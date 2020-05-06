@@ -1,0 +1,125 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+    <title>How Long Has Alex Been Working?</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    
+    <style>
+        body{
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .set-name{
+            font-weight: bold;
+        }
+     </style>
+
+     <script type="text/javascript">
+        "use strict"
+
+        const WorkSpan = function(name, startDate, endDate){
+            this.ms = endDate.getTime() - startDate.getTime();
+            let days = this.ms / (1000 * 3600 * 24); 
+            let years = days / 365;
+
+            this.element = InfoElement(name, startDate, endDate, this.ms);
+        };
+
+        const InfoElement = function(name, startDate, endDate, ms){
+            let days = ms / (1000 * 3600 * 24); 
+            let years = days / 365;
+
+            let element = document.createElement("li");
+
+            let span = document.createElement("span");
+            span.innerHTML = name;
+            span.className = "set-name";
+            element.appendChild(span);
+
+            let detailList = document.createElement("ul");
+            element.appendChild(detailList);
+
+            if(startDate){
+                let startDateEl = document.createElement("li");
+                startDateEl.innerHTML = "Start: " + startDate.toDateString();
+                startDateEl.className = "date";
+                detailList.appendChild(startDateEl);
+            }
+
+            if(endDate){
+                let endDateEl = document.createElement("li");
+                endDateEl.innerHTML = "End: " + endDate.toDateString();
+                endDateEl.className = "date";
+                detailList.appendChild(endDateEl);
+            }
+            
+            let daysEl = document.createElement("li");
+            daysEl.innerHTML = "Days: " + Round(days);
+            daysEl.className = "date-span";
+            detailList.appendChild(daysEl);
+
+            let yearsEl = document.createElement("li");
+            yearsEl.innerHTML = "Years: " + Round(years);
+            yearsEl.className = "date-span";
+            detailList.appendChild(yearsEl);
+
+            return element;
+        };
+
+        const Round = function(num){
+            const DEC_DIGITS = 2;
+            const multiplier = Math.pow(10, DEC_DIGITS);
+            num *= multiplier;
+            num = Math.round(num);
+            num /= multiplier;
+            return num;
+        }
+
+        const workspans = [];
+
+        workspans.push(new WorkSpan(
+            "Internship 1",
+            new Date("06/15/2015"),     // Start date on MII
+            new Date("8/22/2015")));    // A guess
+
+        workspans.push(new WorkSpan(
+            "Internship 2",
+            new Date("5/30/2016"),      // 3 mondays before first paycheck
+            new Date("8/19/2016")));    // 1 friday before last paycheck
+
+        workspans.push(new WorkSpan(
+            "Internship 3",
+            new Date("5/29/2017"),      // 3 mondays before first paycheck
+            new Date("8/25/2017")));    // Friday of second-to-last paycheck (last paycheck, 2 weeks later, is for $2.34)
+
+        workspans.push(new WorkSpan(
+            "Ongoing",
+            new Date("1/22/2018"),      // 3 mondays before first paycheck
+            new Date(Date.now())));     // Today!
+    
+        window.onload = function(){
+            let infolist = document.getElementById("infolist");
+
+            let totalMS = 0
+            for(let w in workspans){
+                infolist.appendChild(workspans[w].element);
+                totalMS += workspans[w].ms;
+            }
+
+            infolist.appendChild(InfoElement(
+                "Total",
+                undefined,
+                undefined,
+                totalMS
+            ));
+        };
+
+     </script>
+
+</head>
+<body>
+    <h1>How Long Has Alex Been Working?</h1>
+    <ul id="infolist"></ul>
+</body>
+</html>
