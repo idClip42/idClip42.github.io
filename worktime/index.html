@@ -97,6 +97,12 @@
             "Ongoing",
             new Date("1/22/2018"),      // 3 mondays before first paycheck
             new Date(Date.now())));     // Today!
+
+        const serviceDateWorkspan = new WorkSpan(
+            "Since Service Date",
+            new Date("5/26/2017"),      // Listed service date
+            new Date(Date.now())        // Today!
+        );
     
         window.onload = function(){
             let infolist = document.getElementById("infolist");
@@ -113,6 +119,8 @@
                 undefined,
                 totalMS
             ));
+
+            infolist.appendChild(serviceDateWorkspan.element);
         };
 
      </script>
